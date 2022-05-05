@@ -11,7 +11,7 @@ public class Restaurant {
 
     private String login;
     private String password;
-    private int loginAttempts;
+    private int loginAttempts = 3;
     private boolean blocked;
 
 //    private List<Dish>;
