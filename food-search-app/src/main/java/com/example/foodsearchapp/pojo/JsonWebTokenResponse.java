@@ -1,6 +1,5 @@
 package com.example.foodsearchapp.pojo;
 
-import com.example.foodsearchapp.model.Status;
 import lombok.Data;
 
 import java.util.List;
@@ -13,9 +12,9 @@ public class JsonWebTokenResponse {
     private Long id;
     private String username;
     private String email;
-    private List<Status> statuses;
+    private List<String> statuses;
 
-    public JsonWebTokenResponse(String token, Long id, String username, String email, List<Status> statuses) {
+    public JsonWebTokenResponse(String token, Long id, String username, String email, List<String> statuses) {
         this.token = token;
         this.id = id;
         this.username = username;

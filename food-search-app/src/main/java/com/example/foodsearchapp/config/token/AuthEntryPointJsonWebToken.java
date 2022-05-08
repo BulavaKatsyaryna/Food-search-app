@@ -29,7 +29,7 @@ public class AuthEntryPointJsonWebToken implements AuthenticationEntryPoint {
 
         final Map<String, Object> body = new HashMap<>();
         body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
-        body.put("error", "Not Authorized");
+        body.put("error", "Authorization failed");
         body.put("message", authException.getMessage());
         body.put("path", request.getServletPath());
 
