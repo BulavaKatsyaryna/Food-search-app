@@ -98,11 +98,11 @@ public class AuthController {
             status.add(userStatus);
         } else {
             requestStatus.forEach(r -> {
-                if ("admin".equals(r)) {
-                    Status adminStatus = statusRepo
+                if ("restaurant".equals(r)) {
+                    Status restaurantStatus = statusRepo
                             .findByName(EStatus.STATUS_RESTAURANT)
                             .orElseThrow(() -> new RuntimeException("Error, RESTAURANT status not found"));
-                    status.add(adminStatus);
+                    status.add(restaurantStatus);
                 } else {
                     Status userStatus = statusRepo
                             .findByName(EStatus.STATUS_USER)
