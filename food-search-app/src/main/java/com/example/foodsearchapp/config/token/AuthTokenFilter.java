@@ -26,7 +26,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private Utility utility;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -36,7 +36,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (jsonWebToken != null && utility.validateJsonWebToken(jsonWebToken)) {
                 String username = utility.getUserNameFromJsonWebToken(jsonWebToken);
 
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,
                         null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

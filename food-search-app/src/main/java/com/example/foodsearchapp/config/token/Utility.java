@@ -40,7 +40,6 @@ public class Utility {
         } catch (MalformedJwtException | IllegalArgumentException e) {
             log.error(e.getMessage());
         }
-
         return false;
     }
 
