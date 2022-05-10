@@ -21,20 +21,20 @@ import java.io.IOException;
 public class AuthTokenFilter extends OncePerRequestFilter {
 
     @Autowired
-    private Utility utility;
+    private JwtUtility jwtUtility;
 
     @Autowired
-    private UserDetailsServiceImpl userDetailsServiceImpl;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            String jsonWebToken = parseJsonWebToken(request);
-            if (jsonWebToken != null && utility.validateJsonWebToken(jsonWebToken)) {
-                String username = utility.getUserNameFromJsonWebToken(jsonWebToken);
+            String jwt = parseJwt(request);
+            if (jwt != null && jwtUtility.validateJwt(jwt)) {
+                String username = jwtUtility.getUserNameFromJwt(jwt);
 
-                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,
                         null, userDetails.getAuthorities());
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -47,7 +47,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String parseJsonWebToken(HttpServletRequest request) {
+    private String parseJwt(HttpServletRequest request) {
         String headerAuth = request.getHeader("Authorization");
 
         if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {

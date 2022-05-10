@@ -3,11 +3,11 @@ package com.example.foodsearchapp.pojo;
 import lombok.Data;
 
 @Data
-public class MessResponse {
+public class MessageResponse {
 
     private String message;
 
-    public MessResponse(String message) {
+    public MessageResponse(String message) {
         this.message = message;
     }
 }

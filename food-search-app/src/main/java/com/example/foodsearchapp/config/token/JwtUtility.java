@@ -13,27 +13,27 @@ import java.util.Date;
 
 @Slf4j
 @Component
-public class Utility {
+public class JwtUtility {
 
-    @Value("${app.jsonWebTokenSecret}")
-    private String jsonWebTokenSecret;
+    @Value("${app.jwtSecret}")
+    private String jwtSecret;
 
-    @Value("${app.jsonWebTokenExpirationMillisecond}")
-    private int jsonWebTokenExpirationMillisecond;
+    @Value("${app.jwtExpirationMillisecond}")
+    private int jwtExpirationMillisecond;
 
-    public String generateJsonWebToken(Authentication authentication) {
+    public String generateJwt(Authentication authentication) {
 
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
         return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jsonWebTokenExpirationMillisecond))
-                .signWith(SignatureAlgorithm.HS512, jsonWebTokenSecret)
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMillisecond))
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
-    public boolean validateJsonWebToken(String jwt) {
+    public boolean validateJwt(String jwt) {
         try {
-            Jwts.parser().setSigningKey(jsonWebTokenSecret).parseClaimsJws(jwt);
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt);
             return true;
         } catch (MalformedJwtException | IllegalArgumentException e) {
             log.error(e.getMessage());
@@ -41,7 +41,7 @@ public class Utility {
         return false;
     }
 
-    public String getUserNameFromJsonWebToken(String jwt) {
-        return Jwts.parser().setSigningKey(jsonWebTokenSecret).parseClaimsJws(jwt).getBody().getSubject();
+    public String getUserNameFromJwt(String jwt) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwt).getBody().getSubject();
     }
 }

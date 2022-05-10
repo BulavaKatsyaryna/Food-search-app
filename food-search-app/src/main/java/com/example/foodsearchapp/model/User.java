@@ -21,7 +21,7 @@ public class User {
 
     private String username;
     private String email;
-    private String pass;
+    private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_status",
@@ -32,7 +32,7 @@ public class User {
     public User(String username, String email, String pass) {
         this.username = username;
         this.email = email;
-        this.pass = pass;
+        this.password = pass;
     }
 
     public User() {

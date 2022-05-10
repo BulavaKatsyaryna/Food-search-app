@@ -1,12 +1,12 @@
 package com.example.foodsearchapp.controller;
 
-import com.example.foodsearchapp.config.token.Utility;
+import com.example.foodsearchapp.config.token.JwtUtility;
 import com.example.foodsearchapp.model.EStatus;
 import com.example.foodsearchapp.model.Status;
 import com.example.foodsearchapp.model.User;
-import com.example.foodsearchapp.pojo.JsonWebTokenResponse;
+import com.example.foodsearchapp.pojo.JwtResponse;
 import com.example.foodsearchapp.pojo.LoginRequest;
-import com.example.foodsearchapp.pojo.MessResponse;
+import com.example.foodsearchapp.pojo.MessageResponse;
 import com.example.foodsearchapp.pojo.RegistrationRequest;
 import com.example.foodsearchapp.repo.StatusRepo;
 import com.example.foodsearchapp.repo.UserRepo;
@@ -32,19 +32,19 @@ import java.util.stream.Collectors;
 public class AuthController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    UserRepo userRepo;
+    private UserRepo userRepo;
 
     @Autowired
-    StatusRepo statusRepo;
+    private StatusRepo statusRepo;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    Utility utility;
+    private JwtUtility utility;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authUser(@RequestBody LoginRequest loginRequest) {
@@ -55,14 +55,14 @@ public class AuthController {
                         loginRequest.getPass()));
 
         SecurityContextHolder.getContext().setAuthentication(auth);
-        String jsonWebToken = utility.generateJsonWebToken(auth);
+        String jwt = utility.generateJwt(auth);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
         List<String> statuses = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new JsonWebTokenResponse(jsonWebToken,
+        return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
@@ -75,13 +75,13 @@ public class AuthController {
         if (userRepo.existsByUsername(registrationRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessResponse("Error: Username exist"));
+                    .body(new MessageResponse("Error: Username exist"));
         }
 
         if (userRepo.existsByEmail(registrationRequest.getEmail())) {
             return ResponseEntity
                     .badRequest()
-                    .body(new MessResponse("Error: Email exist"));
+                    .body(new MessageResponse("Error: Email exist"));
         }
 
         User user = new User(registrationRequest.getUsername(),
@@ -113,6 +113,6 @@ public class AuthController {
         }
         user.setStatuses(status);
         userRepo.save(user);
-        return ResponseEntity.ok(new MessResponse("User created!"));
+        return ResponseEntity.ok(new MessageResponse("User created!"));
     }
 }

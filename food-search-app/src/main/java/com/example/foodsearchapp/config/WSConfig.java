@@ -1,6 +1,6 @@
 package com.example.foodsearchapp.config;
 
-import com.example.foodsearchapp.config.token.AuthEntryPointJsonWebToken;
+import com.example.foodsearchapp.config.token.AuthEntryPointJwt;
 import com.example.foodsearchapp.config.token.AuthTokenFilter;
 import com.example.foodsearchapp.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class WSConfig extends WebSecurityConfigurerAdapter {
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private AuthEntryPointJsonWebToken unauthorizedHandler;
+    private AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {

@@ -17,17 +17,17 @@ public class UserDetailsImpl implements UserDetails {
     private String email;
 
     @JsonIgnore
-    private String pass;
+    private String password;
 
     private Collection<? extends GrantedAuthority> auth;
 
     private static final long serialVersionUID = 1L;
 
-    public UserDetailsImpl(Long id, String username, String email, String pass, Collection<? extends GrantedAuthority> auth) {
+    public UserDetailsImpl(Long id, String username, String email, String password, Collection<? extends GrantedAuthority> auth) {
         this.id = id;
         this.username = username;
         this.email = email;
-        this.pass = pass;
+        this.password = password;
         this.auth = auth;
     }
 
@@ -40,7 +40,7 @@ public class UserDetailsImpl implements UserDetails {
                 user.getId(),
                 user.getUsername(),
                 user.getEmail(),
-                user.getPass(),
+                user.getPassword(),
                 auth);
     }
 
@@ -59,7 +59,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getPassword() {
-        return pass;
+        return password;
     }
 
     @Override
