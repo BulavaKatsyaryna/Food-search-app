@@ -1,8 +1,8 @@
 package com.example.foodsearchapp.controller;
 
 import com.example.foodsearchapp.config.token.JwtUtility;
-import com.example.foodsearchapp.model.EStatus;
 import com.example.foodsearchapp.model.Status;
+import com.example.foodsearchapp.model.UserStatus;
 import com.example.foodsearchapp.model.User;
 import com.example.foodsearchapp.pojo.JwtResponse;
 import com.example.foodsearchapp.pojo.LoginRequest;
@@ -52,7 +52,7 @@ public class AuthController {
         Authentication auth = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
-                        loginRequest.getPass()));
+                        loginRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwt = utility.generateJwt(auth);
@@ -86,26 +86,26 @@ public class AuthController {
 
         User user = new User(registrationRequest.getUsername(),
                 registrationRequest.getEmail(),
-                passwordEncoder.encode(registrationRequest.getPass()));
+                passwordEncoder.encode(registrationRequest.getPassword()));
 
         Set<String> requestStatus = registrationRequest.getStatuses();
-        Set<Status> status = new HashSet<>();
+        Set<UserStatus> status = new HashSet<>();
 
         if (requestStatus == null) {
-            Status userStatus = statusRepo
-                    .findByName(EStatus.STATUS_USER)
+            UserStatus userStatus = statusRepo
+                    .findByName(Status.STATUS_USER)
                     .orElseThrow(() -> new RuntimeException("Error, USER status not found"));
             status.add(userStatus);
         } else {
             requestStatus.forEach(r -> {
                 if ("restaurant".equals(r)) {
-                    Status restaurantStatus = statusRepo
-                            .findByName(EStatus.STATUS_RESTAURANT)
+                    UserStatus restaurantStatus = statusRepo
+                            .findByName(Status.STATUS_RESTAURANT)
                             .orElseThrow(() -> new RuntimeException("Error, RESTAURANT status not found"));
                     status.add(restaurantStatus);
                 } else {
-                    Status userStatus = statusRepo
-                            .findByName(EStatus.STATUS_USER)
+                    UserStatus userStatus = statusRepo
+                            .findByName(Status.STATUS_USER)
                             .orElseThrow(() -> new RuntimeException("Error, USER status not found"));
                     status.add(userStatus);
                 }

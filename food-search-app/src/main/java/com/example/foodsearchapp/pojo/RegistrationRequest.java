@@ -10,6 +10,6 @@ public class RegistrationRequest {
     private String username;
     private String email;
     private Set<String> statuses;
-    private String pass;
+    private String password;
 
 }

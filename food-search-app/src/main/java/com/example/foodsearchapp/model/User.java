@@ -1,12 +1,14 @@
 package com.example.foodsearchapp.model;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "users",
         uniqueConstraints = {
@@ -27,14 +29,11 @@ public class User {
     @JoinTable(name = "user_status",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "status_id"))
-    private Set<Status> statuses = new HashSet<>();
+    private Set<UserStatus> statuses = new HashSet<>();
 
     public User(String username, String email, String pass) {
         this.username = username;
         this.email = email;
         this.password = pass;
-    }
-
-    public User() {
     }
 }
