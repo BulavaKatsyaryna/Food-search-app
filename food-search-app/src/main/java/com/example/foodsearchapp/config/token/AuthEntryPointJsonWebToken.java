@@ -1,8 +1,7 @@
 package com.example.foodsearchapp.config.token;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -14,10 +13,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Component
 public class AuthEntryPointJsonWebToken implements AuthenticationEntryPoint {
-
-    private static final Logger log = LoggerFactory.getLogger(AuthEntryPointJsonWebToken.class);
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
